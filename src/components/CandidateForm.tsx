@@ -3,6 +3,8 @@
 import { useState } from 'react';
 import { Candidate } from '@/types/candidate';
 
+type ArrayField = 'experience' | 'skills' | 'projects' | 'achievements';
+
 export default function CandidateForm() {
   const [formData, setFormData] = useState<Partial<Candidate>>({
     experience: [{ company: '', role: '', duration: '', description: '' }],
@@ -32,10 +34,10 @@ export default function CandidateForm() {
     }
   };
 
-  const addArrayItem = (field: keyof Candidate) => {
+  const addArrayItem = (field: ArrayField) => {
     setFormData(prev => ({
       ...prev,
-      [field]: [...(prev[field] as any[]), field === 'experience' ? 
+      [field]: [...(prev[field] as Array<unknown>), field === 'experience' ? 
         { company: '', role: '', duration: '', description: '' } :
         field === 'projects' ? 
         { name: '', description: '', technologies: [''] } : '']
