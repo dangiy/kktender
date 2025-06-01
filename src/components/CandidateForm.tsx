@@ -37,10 +37,11 @@ export default function CandidateForm() {
   const addArrayItem = (field: ArrayField) => {
     setFormData(prev => ({
       ...prev,
-      [field]: [...(prev[field] as Array<unknown>), field === 'experience' ? 
-        { company: '', role: '', duration: '', description: '' } :
-        field === 'projects' ? 
-        { name: '', description: '', technologies: [''] } : '']
+      [field]: [...(prev[field] as Array<string | { company: string; role: string; duration: string; description: string } | { name: string; description: string; technologies: string[] }>), 
+        field === 'experience' ? 
+          { company: '', role: '', duration: '', description: '' } :
+          field === 'projects' ? 
+            { name: '', description: '', technologies: [''] } : '']
     }));
   };
 
