@@ -1,17 +1,9 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { Candidate } from '@/types/candidate';
-
-interface TenderData extends Candidate {
-  tenderId: string;
-  status: 'pending' | 'shortlisted' | 'rejected';
-  type: string;
-  version: number;
-}
 
 export default function Leaderboard() {
-  const [tenders, setTenders] = useState<TenderData[]>([]);
+  const [tenders, setTenders] = useState([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -21,11 +13,11 @@ export default function Leaderboard() {
         if (response.ok) {
           const data = await response.json();
           // Sort tenders by score
-          const sortedTenders = data.sort((a: TenderData, b: TenderData) => 
+          const sortedTenders = data.sort((a, b) => 
             (b.score || 0) - (a.score || 0)
           );
           // Add ranks
-          const rankedTenders = sortedTenders.map((tender: TenderData, index: number) => ({
+          const rankedTenders = sortedTenders.map((tender, index) => ({
             ...tender,
             rank: index + 1
           }));
