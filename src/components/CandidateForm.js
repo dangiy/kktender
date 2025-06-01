@@ -1,19 +1,16 @@
 'use client';
 
 import { useState } from 'react';
-import { Candidate } from '@/types/candidate';
-
-type ArrayField = 'experience' | 'skills' | 'projects' | 'achievements';
 
 export default function CandidateForm() {
-  const [formData, setFormData] = useState<Partial<Candidate>>({
+  const [formData, setFormData] = useState({
     experience: [{ company: '', role: '', duration: '', description: '' }],
     skills: [''],
     projects: [{ name: '', description: '', technologies: [''] }],
     achievements: ['']
   });
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     try {
       const response = await fetch('/api/submit-candidate', {
@@ -34,14 +31,13 @@ export default function CandidateForm() {
     }
   };
 
-  const addArrayItem = (field: ArrayField) => {
+  const addArrayItem = (field) => {
     setFormData(prev => ({
       ...prev,
-      [field]: [...(prev[field] as Array<string | { company: string; role: string; duration: string; description: string } | { name: string; description: string; technologies: string[] }>), 
-        field === 'experience' ? 
-          { company: '', role: '', duration: '', description: '' } :
-          field === 'projects' ? 
-            { name: '', description: '', technologies: [''] } : '']
+      [field]: [...prev[field], field === 'experience' ? 
+        { company: '', role: '', duration: '', description: '' } :
+        field === 'projects' ? 
+        { name: '', description: '', technologies: [''] } : '']
     }));
   };
 
